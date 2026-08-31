@@ -31,12 +31,14 @@
                            {% if current_user.is_authenticated and current_user.role in ['admin', 'author'] %}
                               <li><a href="{{ url_for('new_post') }}" class="button primary">Create New Post</a></li>
                            {% endif %}
-                           {% if current_user.is_authenticated %}F
+                           {% if current_user.is_authenticated and current_user.role in ['admin'] %}
+                           <li><a href="{{ url_for('users_list') }}" class="button">Manage Users</a></li>
+                           {% endif %}
+                           {% if current_user.is_authenticated %}
                               <a href="{{ url_for('logout') }}" class="button">Log Out</a>
                            {% else %}
                             <li><a href="{{ url_for('login') }}" class="button primary">Login</a></li>
                            <li><a href="{{ url_for('register') }}" class="button">Register User</a></li>
-                           <li><a href="{{ url_for('users_list') }}" class="button">Manage Users</a></li>
                            {% endif %}
                         </ul>
 
