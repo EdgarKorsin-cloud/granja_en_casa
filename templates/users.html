@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+       <title>Manage Users - Edgar Korsin</title>
+       <meta charset="utf-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+       <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+    </head>
+    <body class="is-preload">
+          <header id="header">
+             <div class="inner">
+                <a href="{{ url_for('index') }}" class="image avatar"><img src="{{ url_for('static', filename='images/avatar.jpg') }}" alt="" /></a>
+                <h1><strong>Edgar Korsin</strong><br />
+                <a href="{{ url_for('index') }}">← Back to Home</a></h1>
+             </div>
+          </header>
+
+          <div id="main">
+             <section>
+                <header class="major">
+                   <h2>Registered Users</h2>
+                </header>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in all_users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    <ul class="actions small">
+                                        <li><a href="{{ url_for('edit_user', user_id=user.id) }}" class="button small primary">Edit</a></li>
+                                        <li>
+                                            <a href="{{ url_for('delete_user', user_id=user.id) }}"
+                                               class="button small"
+                                               style="background-color: #dc3545; color: white; box-shadow: none;"
+                                               onclick="return confirm('Delete this user?');">Delete</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4">No users found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+             </section>
+          </div>
+    </body>
+</html>

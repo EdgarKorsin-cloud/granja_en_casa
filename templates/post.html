@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+       <title>{{ post.title }} - Edgar Korsin</title>
+       <meta charset="utf-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+       <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+    </head>
+    <body class="is-preload">
+
+       <!-- Header Sidebar -->
+          <header id="header">
+             <div class="inner">
+                <a href="{{ url_for('index') }}" class="image avatar"><img src="{{ url_for('static', filename='images/avatar.jpg') }}" alt="" /></a>
+                <h1><strong>Edgar Korsin</strong><br />
+                <a href="{{ url_for('index') }}">← Back to Home</a></h1>
+             </div>
+          </header>
+
+
+          <div id="main">
+             <section>
+                <header class="major">
+                   <h2>{{ post.title }}</h2>
+                   <p><strong>{{ post.subtitle }}</strong></p>
+                   <small>Written by {{ post.author.name }} on {{ post.date }}</small>
+                </header>
+
+                <div class="image fit">
+                   <img src="{{ url_for('static', filename=post.img_url) }}" alt="" />
+                </div>
+
+
+                <div class="post-body">
+                   {{ post.body | safe }}
+                </div>
+
+                <hr />
+                <ul class="actions">
+                   <li><a href="{{ url_for('index') }}" class="button">Back</a></li>
+                    {% if current_user.is_authenticated and current_user.role in ['admin', 'author'] %}
+                        <li><a href="{{ url_for('edit_post', post_id=post.id) }}" class="button primary">Edit Post</a></li>
+                    {% endif %}
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                        <li><a href="{{ url_for('delete_post', post_id=post.id) }}" class="button" style="background-color: #dc3545; color: white;">Delete Post</a></li>
+                    {% endif %}
+                </ul>
+             </section>
+          </div>
+       <hr />
+       <h3>Comments</h3>
+        {% if current_user.is_authenticated %}
+            <form method="POST" action="{{ url_for('show_post', post_id=post.id) }}">
+            {{ form.csrf_token }}
+        <div class="row gtr-uniform">
+            <div class="col-12" style="margin-bottom: 15px;">
+                {{ form.comment(placeholder="Leave a comment...", rows=3) }}
+            </div>
+            <div class="col-12">
+                {{ form.submit(class="button primary small") }}
+                </div>
+        </div>
+            </form>
+        {% else %}
+       <ul class="alt" style="margin-top: 30px;">
+            {% for comment in post.comments %}
+            <li>
+                <strong>{{ comment.comment_author.name }}</strong> said:<br>
+                {{ comment.text }}
+            </li>
+        {% else %}
+            <li>No comments yet. Be the first!</li>
+        {% endfor %}
+</ul>
+    <p><a href="{{ url_for('login') }}">Log in</a> or <a href="{{ url_for('register') }}">Register</a> to leave a comment.</p>
+{% endif %}
+          <footer id="footer">
+             <div class="inner">
+                <ul class="icons">
+                   <li><a href="https://github.com/EdgarKorsin" target="_blank" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                   <li><a href="https://www.instagram.com/korsin_collection/" target="_blank" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                </ul>
+                <ul class="copyright">
+                   <li>Created by EdgarKorsin {{ current_year }}</li>
+                </ul>
+             </div>
+          </footer>
+
+       <!-- Scripts -->
+          <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+       <title>{% if is_edit %}Edit User{% else %}Login{% endif %} - Edgar Korsin</title>
+       <meta charset="utf-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+       <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+    </head>
+    <body class="is-preload">
+          <header id="header">
+             <div class="inner">
+                <a href="{{ url_for('index') }}" class="image avatar"><img src="{{ url_for('static', filename='images/avatar.jpg') }}" alt="" /></a>
+                <h1><strong>Edgar Korsin</strong><br />
+                <a href="{{ url_for('index') }}">← Back to Home</a></h1>
+             </div>
+          </header>
+
+          <div id="main">
+             <section>
+                <header class="major">
+                   <h2>{% if is_edit %}Edit User{% else %}Register New User{% endif %}</h2>
+                </header>
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+                <form method="POST">
+                    {{ form.csrf_token }}
+
+                    <div class="row gtr-uniform">
+                        <div class="col-12">
+                            <label><strong>Email</strong></label>
+                            {{ form.email(placeholder="Email Address") }}
+                        </div>
+                        <div class="col-12">
+                            <label><strong>{% if is_edit %}New Password (Leave blank to keep current){% else %}Password{% endif %}</strong></label>
+                            <!-- Note: WTForms clears password fields automatically on render -->
+                            {{ form.password(placeholder="Password", required=not is_edit) }}
+                        </div>
+                        <div class="col-12">
+                            <ul class="actions">
+                                <li>{{ form.submit(class="button primary") }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+             </section>
+          </div>
+    </body>
+</html>

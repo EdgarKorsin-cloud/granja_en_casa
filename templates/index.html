@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+       <title>Edgar Korsin Blog</title>
+       <meta charset="utf-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+       <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+    </head>
+    <body class="is-preload">
+
+       <!-- Header -->
+          <header id="header">
+             <div class="inner">
+                <a href="{{ url_for('index') }}" class="image avatar"><img src="{{ url_for('static', filename='images/avatar.jpg') }}" alt="" /></a>
+                <h1><strong>Soy Edgar Korsin</strong>, un Creador y Constructor <br />
+                Project Manager, Developer y GameMaster.<br/>
+                craft snaps aqui <a href="https://www.instagram.com/korsin_collection/" target="_blank">EdgarKorsin</a>.</h1>
+             </div>
+          </header>
+
+       <!-- Main -->
+          <div id="main">
+
+             <!-- Intro -->
+                <section id="one">
+                   <header class="major">
+                    <h2>¡Pero taaaarde mano!<br /></h2>
+                   </header>
+                    <p>Un lugar donde habran historias de misterio y aventura, reseñas y experiencias de juegas y cultura, talvez no novedosas pero si sinceras.</p>
+                        <ul class="actions">
+                           {% if current_user.is_authenticated and current_user.role in ['admin', 'author'] %}
+                              <li><a href="{{ url_for('new_post') }}" class="button primary">Create New Post</a></li>
+                           {% endif %}
+                           {% if current_user.is_authenticated %}F
+                              <a href="{{ url_for('logout') }}" class="button">Log Out</a>
+                           {% else %}
+                            <li><a href="{{ url_for('login') }}" class="button primary">Login</a></li>
+                           <li><a href="{{ url_for('register') }}" class="button">Register User</a></li>
+                           <li><a href="{{ url_for('users_list') }}" class="button">Manage Users</a></li>
+                           {% endif %}
+                        </ul>
+
+
+             <!-- Posts Grid -->
+                <section id="two">
+                   <h2>Recent Posts</h2>
+                   <div class="row">
+                      {% for post in all_posts %}
+                      <article class="col-6 col-12-xsmall work-item">
+                         <!-- Removed poptrox class 'thumb' so it navigates directly to the post page -->
+                         <a href="{{ url_for('show_post', post_id=post.id) }}" class="image fit">
+                             <img src="{{ url_for('static', filename=post.img_url) }}" alt="" />
+                         </a>
+                         <h3><a href="{{ url_for('show_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                         <p>{{ post.subtitle }}</p>
+                      </article>
+                      {% else %}
+                      <p>No posts published yet.</p>
+                      {% endfor %}
+                   </div>
+                </section>
+
+             <!-- Contact Form -->
+                <section id="three">
+                   <h2>Get In Touch</h2>
+                   <div class="row">
+                      <div class="col-8 col-12-small">
+                         {% if success_message %}
+                            <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                                {{ success_message }}
+                            </div>
+                         {% endif %}
+
+                         <form method="post" action="{{ url_for('contact') }}">
+                            <div class="row gtr-uniform gtr-50">
+                               <div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Name" required /></div>
+                               <div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" required /></div>
+                               <div class="col-12"><textarea name="message" id="message" placeholder="Message" rows="4" required></textarea></div>
+                            </div>
+                            <br>
+                            <ul class="actions">
+                               <li><input type="submit" value="Send Message" /></li>
+                            </ul>
+                         </form>
+                      </div>
+                   </div>
+                </section>
+          </div>
+
+       <!-- Footer -->
+          <footer id="footer">
+             <div class="inner">
+                <ul class="icons">
+                   <li><a href="https://github.com/EdgarKorsin" target="_blank" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                   <li><a href="https://www.instagram.com/korsin_collection/" target="_blank" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                </ul>
+                <ul class="copyright">
+                   <li>Created by EdgarKorsin {{ current_year }}</li>
+                </ul>
+             </div>
+          </footer>
+
+       <!-- Scripts -->
+          <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+    </body>
+</html>
