@@ -61,13 +61,15 @@ with app.app_context():
     db.create_all()
 
 class LoginForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired(), Email()])
+    email = StringField("Email", validators=[DataRequired(),
+                                             Email(check_deliverability=False, message="Invalid email address.")])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Log in")
 
 class RegisterForm(FlaskForm):
     name = StringField("Your Name", validators=[DataRequired()])
-    email = StringField("Your Email", validators=[DataRequired(), Email()])
+    email = StringField("Your Email", validators=[DataRequired(),
+                                                  Email(check_deliverability=False, message="Invalid email address.")])
     password = PasswordField("Password", validators=[DataRequired()])
     token = StringField("Interview/Admin Token (Optional)")
     submit = SubmitField("Save User")
