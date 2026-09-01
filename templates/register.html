@@ -14,7 +14,15 @@
                 <a href="{{ url_for('index') }}">← Back to Home</a></h1>
              </div>
           </header>
-
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                     {{ message }}
+                    </div>
+                    {% endfor %}
+            {% endif %}
+          {% endwith %}
           <div id="main">
              <section>
                 <header class="major">
@@ -30,7 +38,7 @@
                   {% endif %}
                 {% endwith %}
                 <form method="POST">
-                    {{ form.csrf_token }}
+                    {{ form.hidden_tag() }}
 
                     <div class="row gtr-uniform">
                         <div class="col-12">
